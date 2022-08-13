@@ -54,6 +54,7 @@ app.get("/posts/:id", async (req, res) => {
 const commitToDb = async (promise) => {
   const [error, data] = await app.to(promise);
   if (error) return app.httpErrors.internalServerError(error.message);
+
   return data;
 };
 

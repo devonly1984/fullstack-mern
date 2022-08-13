@@ -10,17 +10,28 @@ export const usePost = () => {
 const PostProvider = ({ children }) => {
   const { id } = useParams();
   const { loading, error, value: post } = useAsync(() => getPost(id), [id]);
-  const commentsbyParentid = useMemo(() => {
+
+  const commentsbyParentId = useMemo(() => {
     const group = {};
-    post.comments.forEach((comment) => {
+    if (post?.comments == null) return [];
+    post?.comments?.forEach((comment) => {
       group[comment.parentId] ||= [];
       group[comment.parentId].push(comment);
     });
     return group;
-  }, [post.comments]);
-  console.log(commentsbyParentid);
+  }, [post?.comments]);
+  const getReplies = (parentId) => {
+    return commentsbyParentId[parentId];
+  };
+
   return (
-    <Context.Provider value={{ post: { id, ...post } }}>
+    <Context.Provider
+      value={{
+        post: { id, ...post },
+        getReplies,
+        rootComments: commentsbyParentId[null],
+      }}
+    >
       {loading ? (
         <h1>Loading</h1>
       ) : error ? (
