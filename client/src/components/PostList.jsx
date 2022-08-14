@@ -13,7 +13,7 @@ const PostList = () => {
     posts?.map((post) => {
       return (
         <h1 key={post?.id}>
-          <Link href={`/posts/${post?.id}`}>{post.title}</Link>
+          <a href={`/posts/${post?.id}`}>{post.title}</a>
         </h1>
       );
     })
